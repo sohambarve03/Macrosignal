@@ -1,17 +1,3 @@
-# ══════════════════════════════════════════════════════════════
-# data_pipeline/news_fetcher.py
-#
-# 📖 WHAT THIS FILE DOES:
-#   Fetches real geopolitical news headlines from free RSS feeds.
-#   RSS = Really Simple Syndication — a standard format news
-#   websites use to share headlines automatically.
-#   No API key needed. Completely free. Works right now.
-#
-# 📖 WHAT IS AN RSS FEED?
-#   Every major news site publishes a live XML file at a URL.
-#   It lists their latest headlines + links. We read that file,
-#   extract the headlines, and pass them to our LLM.
-# ══════════════════════════════════════════════════════════════
 
 import feedparser       # reads RSS feeds (pip install feedparser)
 import json
@@ -19,7 +5,7 @@ import os
 from datetime import datetime
 from data_pipeline.event_mapper import detect_region
 
-# ── RSS FEED SOURCES ───────────────────────────────────────────
+# RSS FEED SOURCES 
 # Free geopolitical/financial news feeds — no API key needed
 RSS_FEEDS = {
     "Reuters World":    "https://feeds.reuters.com/reuters/worldNews",
@@ -101,7 +87,7 @@ def load_headlines(path="data/raw/headlines.json"):
         return json.load(f)
 
 
-# ── SAMPLE HISTORICAL EVENTS ───────────────────────────────────
+# SAMPLE HISTORICAL EVENTS
 # For testing without internet — real past events with known outcomes
 HISTORICAL_EVENTS = [
     {
@@ -162,7 +148,7 @@ HISTORICAL_EVENTS = [
 ]
 
 
-# ── TEST / RUN ─────────────────────────────────────────────────
+# TEST / RUN
 if __name__ == "__main__":
     print("📰 GeoFinance News Fetcher\n")
 
