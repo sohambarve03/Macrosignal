@@ -1,17 +1,3 @@
-# ══════════════════════════════════════════════════════════════
-# data_pipeline/price_fetcher.py
-#
-# 📖 WHAT THIS FILE DOES:
-#   Downloads historical price data for our 8 ETFs using yfinance.
-#   yfinance = Yahoo Finance wrapper — completely free.
-#   Calculates weekly returns so we can train our ML model.
-#
-# 📖 KEY CONCEPT — WHY WEEKLY RETURNS?
-#   We don't care about exact prices (e.g. XLE = $89.50).
-#   We care about direction and magnitude (XLE went UP 5% this week).
-#   Geopolitical events take ~1 week to fully price in.
-# ══════════════════════════════════════════════════════════════
-
 import yfinance as yf
 import pandas as pd
 import os
@@ -40,7 +26,7 @@ def download_etf_prices(tickers=None, years=None):
     end_date   = datetime.today()
     start_date = end_date - timedelta(days=years * 365)
 
-    print(f"📥 Downloading {len(tickers)} ETFs from {start_date.date()} to {end_date.date()}...")
+    print(f"Downloading {len(tickers)} ETFs from {start_date.date()} to {end_date.date()}...")
 
     # Download all tickers at once (yfinance supports batch download)
     raw_data = yf.download(
@@ -59,7 +45,7 @@ def download_etf_prices(tickers=None, years=None):
     else:
         prices = raw_data[["Close"]].rename(columns={"Close": tickers[0]})
 
-    print(f"✅ Downloaded {len(prices)} weeks of data")
+    print(f" Downloaded {len(prices)} weeks of data")
     print(f"   Date range: {prices.index[0].date()} → {prices.index[-1].date()}")
     print(f"   ETFs: {list(prices.columns)}\n")
 
@@ -100,7 +86,7 @@ def load_returns():
     """Load the saved returns data."""
     path = os.path.join(DATA_PROCESSED, "etf_returns.csv")
     if not os.path.exists(path):
-        print("⚠️  No returns data found. Run price_fetcher.py first.")
+        print("  No returns data found. Run price_fetcher.py first.")
         return None
     df = pd.read_csv(path, index_col=0, parse_dates=True)
     return df
@@ -108,7 +94,7 @@ def load_returns():
 
 def show_summary_stats(returns_df):
     """Print summary statistics — good to understand your data."""
-    print("\n📊 ETF Weekly Returns Summary")
+    print("\n ETF Weekly Returns Summary")
     print("=" * 50)
     print(f"{'ETF':<8} {'Avg Return':>12} {'Volatility':>12} {'Best Week':>12} {'Worst Week':>12}")
     print("-" * 50)
@@ -121,9 +107,9 @@ def show_summary_stats(returns_df):
         print(f"{col:<8} {avg:>+11.2f}% {std:>11.2f}% {best:>+11.2f}% {worst:>+11.2f}%")
 
 
-# ── TEST / RUN ─────────────────────────────────────────────────
+# TEST & RUN
 if __name__ == "__main__":
-    print("💹 GeoFinance Price Fetcher\n")
+    print(" GeoFinance Price Fetcher\n")
 
     # Download prices
     prices = download_etf_prices()
