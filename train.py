@@ -1,26 +1,3 @@
-# ══════════════════════════════════════════════════════════════
-# ml_model/train.py
-#
-# 📖 WHAT THIS FILE DOES:
-#   Trains an XGBoost model to predict ETF direction (UP/DOWN/NEUTRAL)
-#   based on features from geopolitical events.
-#
-# 📖 WHAT IS XGBOOST?
-#   XGBoost = Extreme Gradient Boosting. It builds many small
-#   "decision trees" and combines them. Think of it like asking
-#   100 different analysts to vote on a trade — the majority wins.
-#   It's the most commonly used ML model in finance because:
-#   - Handles small datasets well
-#   - Doesn't need tons of preprocessing
-#   - Very interpretable (feature importance)
-#
-# 📖 KEY CONCEPT — DIRECTIONAL ACCURACY
-#   We don't predict exact prices. We predict DIRECTION.
-#   If we predict XLE goes UP, and it actually goes UP — correct!
-#   55-65% directional accuracy is genuinely good. Real quant
-#   funds celebrate 55% because markets are very noisy.
-# ══════════════════════════════════════════════════════════════
-
 import os
 import sys
 import json
@@ -39,14 +16,14 @@ try:
     XGB_AVAILABLE = True
 except ImportError:
     XGB_AVAILABLE = False
-    print("⚠️  XGBoost not installed. Run: pip install xgboost")
+    print("XGBoost not installed. Run: pip install xgboost")
 
 from data_pipeline.event_mapper import IMPACT_MATRIX, get_expected_impact, ETF_DESCRIPTIONS
 from data_pipeline.news_fetcher import HISTORICAL_EVENTS
 from config import DATA_PROCESSED
 
 
-# ── FEATURE ENGINEERING ────────────────────────────────────────
+# FEATURE ENGINEERING
 # Features = the inputs to our ML model
 # We convert event properties into numbers the model can use
 
@@ -126,11 +103,11 @@ def build_training_dataset():
                 rows.append(row)
 
     if not rows:
-        print("⚠️  No training data found!")
+        print("No training data found!")
         return pd.DataFrame()
 
     df = pd.DataFrame(rows)
-    print(f"✅ Built training dataset: {len(df)} samples")
+    print(f"Built training dataset: {len(df)} samples")
     return df
 
 
@@ -145,7 +122,7 @@ def train_direction_model(df):
         tuple: (trained model, label encoder, feature columns, accuracy)
     """
     if not XGB_AVAILABLE:
-        print("⚠️  XGBoost not available. Install it: pip install xgboost")
+        print("XGBoost not available. Install it: pip install xgboost")
         return None, None, None, 0
 
     # Separate features (X) from target (y)
@@ -165,7 +142,7 @@ def train_direction_model(df):
         X, y_encoded, test_size=0.2, random_state=42
     )
 
-    print(f"\n📊 Training split: {len(X_train)} train, {len(X_test)} test samples")
+    print(f"\n Training split: {len(X_train)} train, {len(X_test)} test samples")
 
     # Train XGBoost
     model = xgb.XGBClassifier(
@@ -183,8 +160,8 @@ def train_direction_model(df):
     y_pred   = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
 
-    print(f"\n🎯 Directional Accuracy: {accuracy:.1%}")
-    print("\n📋 Classification Report:")
+    print(f"\n Directional Accuracy: {accuracy:.1%}")
+    print("\n Classification Report:")
     print(classification_report(y_test, y_pred, target_names=le.classes_))
 
     return model, le, feature_cols, accuracy
@@ -200,9 +177,9 @@ def get_feature_importance(model, feature_cols, top_n=10):
         "importance": model.feature_importances_
     }).sort_values("importance", ascending=False).head(top_n)
 
-    print(f"\n🔍 Top {top_n} Most Important Features:")
+    print(f"\n Top {top_n} Most Important Features:")
     for _, row in importance.iterrows():
-        bar = "█" * int(row["importance"] * 50)
+        bar = " " * int(row["importance"] * 50)
         print(f"  {row['feature']:<30} {row['importance']:.4f}  {bar}")
 
     return importance
@@ -252,7 +229,7 @@ def predict_direction(model, le, feature_cols, event_type, region, severity):
 
 # ── TEST / RUN ─────────────────────────────────────────────────
 if __name__ == "__main__":
-    print("🤖 GeoFinance ML Model Trainer\n")
+    print("GeoFinance ML Model Trainer\n")
 
     # Build dataset
     df = build_training_dataset()
@@ -260,11 +237,11 @@ if __name__ == "__main__":
     if df.empty:
         print("No data to train on. Add more historical events in news_fetcher.py")
     else:
-        print(f"\n📊 Dataset preview:")
+        print(f"\n Dataset preview:")
         print(df[["target_etf", "direction", "actual_change_pct", "severity"]].head(10))
 
         # Train model
-        print("\n🏋️  Training XGBoost model...")
+        print("\n Training XGBoost model...")
         model, le, feature_cols, accuracy = train_direction_model(df)
 
         if model:
@@ -275,7 +252,7 @@ if __name__ == "__main__":
             save_model(model, le, feature_cols)
 
             # Test on new event
-            print("\n\n🧪 Testing prediction on new event:")
+            print("\n\n Testing prediction on new event:")
             print("   Event: US-China trade war escalation, Asia, Severity 3")
             result = predict_direction(model, le, feature_cols, "trade_war", "asia", 3)
             print(f"   Predicted: {result['direction']} (confidence: {result['confidence']:.0%})")
