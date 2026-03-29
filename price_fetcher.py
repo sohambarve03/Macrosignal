@@ -78,8 +78,8 @@ def save_price_data(prices_df, returns_df):
     prices_df.to_csv(prices_path)
     returns_df.to_csv(returns_path)
 
-    print(f"💾 Saved prices  → {prices_path}")
-    print(f"💾 Saved returns → {returns_path}")
+    print(f"Saved prices  → {prices_path}")
+    print(f"Saved returns → {returns_path}")
 
 
 def load_returns():
