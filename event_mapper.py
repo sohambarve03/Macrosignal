@@ -1,24 +1,6 @@
-# ══════════════════════════════════════════════════════════════
-# data_pipeline/event_mapper.py
-#
-# 📖 WHAT THIS FILE DOES:
-#   This is the "knowledge base" of the project — a dictionary
-#   that maps real-world geopolitical events to their expected
-#   effect on each ETF (market sector).
-#
-# 📖 WHY THIS MATTERS:
-#   When LLaMA reads a headline like "Russia escalates Ukraine war",
-#   it classifies it as event_type="conflict_escalation", region="europe".
-#   This file then tells us: ok, that means XLE (oil) goes UP,
-#   JETS (airlines) goes DOWN, ITA (defence) goes UP.
-#
-# 📖 WHAT IS AN ETF?
-#   ETF = Exchange Traded Fund. Instead of buying one stock,
-#   you buy a "basket" of related stocks. Safer, cleaner signals.
-#   XLE = top oil companies, GLD = gold price, ITA = defence companies
-# ══════════════════════════════════════════════════════════════
 
-# ── ETF DESCRIPTIONS ───────────────────────────────────────────
+
+# ETF DESCRIPTIONS
 # Key: ticker symbol  |  Value: what sector it represents
 ETF_DESCRIPTIONS = {
     "XLE":  "Energy / Oil & Gas (ExxonMobil, Chevron, Shell)",
@@ -31,7 +13,7 @@ ETF_DESCRIPTIONS = {
     "DBA":  "Agriculture / Food Commodities (wheat, corn, soybeans)",
 }
 
-# ── THE IMPACT MATRIX ──────────────────────────────────────────
+# THE IMPACT MATRIX 
 # This is the core knowledge of the project.
 # Structure: event_type → region_modifier → {ETF: impact_score}
 #
@@ -259,7 +241,7 @@ REGION_KEYWORDS = {
 }
 
 
-# ── FUNCTIONS ──────────────────────────────────────────────────
+# FUNCTIONS
 
 def detect_region(text):
     """
@@ -351,7 +333,7 @@ def summarise_event(event_type, region="global", severity=2):
     print(f"\n  📋 Examples: {', '.join(event_info['examples'][:2])}")
 
 
-# ── TEST IT ────────────────────────────────────────────────────
+# TEST IT
 if __name__ == "__main__":
     print("🗺️  GeoFinance Event Mapper — Testing\n")
 
