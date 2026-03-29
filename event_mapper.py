@@ -273,7 +273,7 @@ def get_expected_impact(event_type, region="global", severity=2):
     """
     # Check event type exists in our matrix
     if event_type not in IMPACT_MATRIX:
-        print(f"⚠️  Unknown event type: {event_type}")
+        print(f"Unknown event type: {event_type}")
         return {etf: 0 for etf in ETF_DESCRIPTIONS.keys()}
 
     event_data = IMPACT_MATRIX[event_type]
@@ -326,16 +326,16 @@ def summarise_event(event_type, region="global", severity=2):
 
     for etf, score in sorted(impacts.items(), key=lambda x: -abs(x[1])):
         signal  = get_signal_from_score(score)
-        bar     = "█" * int(abs(score))
+        bar     = " " * int(abs(score))
         arrow   = "↑" if score > 0 else "↓" if score < 0 else "→"
         print(f"  {etf:5s}  {signal:4s}  {arrow} {score:+.1f}  {bar}")
 
-    print(f"\n  📋 Examples: {', '.join(event_info['examples'][:2])}")
+    print(f"\n  Examples: {', '.join(event_info['examples'][:2])}")
 
 
 # TEST IT
 if __name__ == "__main__":
-    print("🗺️  GeoFinance Event Mapper — Testing\n")
+    print(" GeoFinance Event Mapper — Testing\n")
 
     # Test 1: Middle East conflict
     summarise_event("conflict_escalation", "middle_east", severity=3)
@@ -349,4 +349,4 @@ if __name__ == "__main__":
     # Test detect_region
     headline = "Russia launches new offensive in Ukraine"
     region = detect_region(headline)
-    print(f"\n🌍 Detected region for '{headline}': {region}")
+    print(f"\n Detected region for '{headline}': {region}")
