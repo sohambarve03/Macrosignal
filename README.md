@@ -1,4 +1,4 @@
-# 🌍 MacroSignal
+# MacroSignal
 ### Global Geopolitical Intelligence → International Market Signal Engine
 
 > A system that monitors geopolitical events happening anywhere in the world and generates real-time **BUY / SELL / HOLD** signals across international stock indices, commodities, and currencies — powered by LLaMA 3 and XGBoost.
@@ -22,21 +22,21 @@ One event. Eight consequences. Eight different markets.
 
 Ukraine conflict escalates
         │
-        ├── 🌾 Wheat futures          +40%   Ukraine = 30% of global wheat supply
-        ├── ⛽ European energy stocks  -18%   Continent dependent on Russian gas
+        ├── Wheat futures          +40%   Ukraine = 30% of global wheat supply
+        ├── European energy stocks  -18%   Continent dependent on Russian gas
         ├── 🇩🇪 German DAX            -20%   Europe's largest economy, fully exposed
-        ├── 🛡️  US Defence stocks      +14%   NATO countries begin rearming
-        ├── 🏦 Russian MOEX           -50%   Sanctions + capital flight
-        ├── 💱 EUR/USD                -12%   European recession fears
-        ├── 🥇 Gold                   +10%   Global safe haven buying
-        └── 🌽 Corn futures           +30%   Food supply chain disruption
+        ├── US Defence stocks      +14%   NATO countries begin rearming
+        ├── Russian MOEX           -50%   Sanctions + capital flight
+        ├── EUR/USD                -12%   European recession fears
+        ├── Gold                   +10%   Global safe haven buying
+        └── Corn futures           +30%   Food supply chain disruption
 ```
 
 Most financial tools react *after* the market has already moved. MacroSignal is built to map these global ripple effects **the moment a headline breaks** — before the crowd prices them in.
 
 ---
 
-## 🧠 What the System Does
+##  What the System Does
 
 The system works in three stages:
 
@@ -62,7 +62,7 @@ BUY / SELL / HOLD output for every tracked instrument, with a score and plain En
 
 ---
 
-## 📊 What MacroSignal Tracks
+## What MacroSignal Tracks
 
 ### International Stock Indices
 | Index | Country | Why it matters geopolitically |
@@ -100,9 +100,11 @@ BUY / SELL / HOLD output for every tracked instrument, with a score and plain En
 | USD/CNY | US-China trade tensions, Taiwan risk |
 | USD/INR | India emerging market sentiment |
 
+### More scope - might go local ( area or country specific )
+
 ---
 
-## 🗺️ How Events Map to Markets
+##  How Events Map to Markets
 
 The core knowledge base of the system — how each event type is expected to move each asset class:
 
@@ -117,11 +119,10 @@ The core knowledge base of the system — how each event type is expected to mov
 | Global pandemic | ↓↓ Strong | ↑↑ Strong | ↑ Moderate | ↓ Weak | → Neutral | ↑ Moderate |
 | Peace agreement | ↓ Weak | ↓↓ Strong | ↓ Weak | ↑ Moderate | ↓↓ Strong | ↑ Moderate |
 
-*Each score is then multiplied by: event severity (1–4) × LLM confidence (0.0–1.0) × regional proximity factor*
 
 ---
 
-## 🤖 The LLM Component — Prompt Engineering
+## The LLM Component — Prompt Engineering
 
 The headline goes in. Structured JSON comes out. No free text. No paragraphs. Just the exact data the pipeline needs.
 
@@ -155,14 +156,14 @@ Getting a large language model to output consistent, parseable JSON — with no 
 
 ```
 ════════════════════════════════════════════════════════════════
-📊  MACROSIGNAL — GLOBAL MARKET REPORT
+MACROSIGNAL — GLOBAL MARKET REPORT
 ════════════════════════════════════════════════════════════════
-📰  Headline:   China conducts military exercises around Taiwan
-🌍  Event:      Military Escalation
-📍  Region:     Asia-Pacific
-⚡  Severity:   4 / 4
-🎯  Confidence: 92%
-💬  Taiwan Strait threatened — semiconductor supply chains
+Headline:   China conducts military exercises around Taiwan
+Event:      Military Escalation
+Region:     Asia-Pacific
+Severity:   4 / 4
+Confidence: 92%
+Taiwan Strait threatened — semiconductor supply chains
     and regional shipping lanes at acute risk
 
 ─── STOCK INDICES ───────────────────────────────────────────────
@@ -174,17 +175,17 @@ Getting a large language model to output consistent, parseable JSON — with no 
 🇦🇺  ASX 200        🔴 SELL   -1.9    China trade dependency
 
 ─── COMMODITIES ─────────────────────────────────────────────────
-⛽   Crude Oil       🟢 BUY    +2.8    Strait of Malacca disruption risk
-🥇   Gold            🟢 BUY    +3.6    Global safe haven demand
-🔋   Lithium         🔴 SELL   -3.2    Taiwan critical to chip supply chain
-🌾   Wheat           🟡 HOLD    0.0    No direct impact
+Crude Oil       🟢 BUY    +2.8    Strait of Malacca disruption risk
+Gold            🟢 BUY    +3.6    Global safe haven demand
+Lithium         🔴 SELL   -3.2    Taiwan critical to chip supply chain
+Wheat           🟡 HOLD    0.0    No direct impact
 
 ─── CURRENCIES ──────────────────────────────────────────────────
-💱   JPY / USD       🟢 BUY    +2.4    Yen safe haven buying
-💱   USD / CNY       🔴 SELL   -3.0    Yuan weakens on sanctions risk
-💱   USD / INR       🟡 HOLD   -0.6    Mild emerging market pressure
+JPY / USD       🟢 BUY    +2.4    Yen safe haven buying
+USD / CNY       🔴 SELL   -3.0    Yuan weakens on sanctions risk
+USD / INR       🟡 HOLD   -0.6    Mild emerging market pressure
 
-🔥  Highest conviction: Gold ↑   Lithium ↓   Nikkei ↓   JPY ↑
+Highest conviction: Gold ↑   Lithium ↓   Nikkei ↓   JPY ↑
 ════════════════════════════════════════════════════════════════
 ```
 
@@ -202,30 +203,8 @@ Getting a large language model to output consistent, parseable JSON — with no 
 
 ---
 
-## 🏗️ Project Structure
 
-```
-macrosignal/
-│
-├── data_pipeline/
-│   ├── event_mapper.py         # Global impact matrix — 12 event types × 24 instruments
-│   ├── news_fetcher.py         # Live RSS feeds — Reuters, BBC, Al Jazeera, FT
-│   └── price_fetcher.py        # yfinance — global indices, commodities, FX
-│
-├── llm_engine/
-│   ├── groq_client.py          # LLaMA 3 via Groq — forces structured JSON output
-│   └── signal_generator.py     # Combines LLM + impact matrix → global signals
-│
-├── ml_model/
-│   └── train.py                # XGBoost directional classifier per instrument
-│
-├── dashboard/
-│   └── app.py                  # Streamlit live dashboard
-│
-└── config.py                   # API keys + instrument universe (not in git)
-```
 
----
 
 ## 🛠️ Tech Stack
 
@@ -237,53 +216,14 @@ macrosignal/
 | News | RSS feeds (Reuters, BBC, Al Jazeera, FT) | Free, no rate limits, real global coverage |
 | Dashboard | Streamlit | Python-native web app, zero frontend code |
 
----
 
-## 📈 Roadmap
 
-- [x] Geopolitical event → global market impact framework
-- [x] LLaMA 3 structured JSON classification via Groq API
-- [x] Rule-based signal generator (works without API key for testing)
-- [x] XGBoost directional classifier
-- [x] Streamlit dashboard — live headline analysis
-- [ ] Expand instrument universe — 10 indices, 8 commodities, 6 FX pairs
-- [ ] Historical event dataset — target 200+ real verified events with outcomes
-- [ ] Backtesting engine — Sharpe ratio, hit rate, max drawdown
-- [ ] SHAP explainability — plain English reasoning per signal
-- [ ] Streamlit Cloud deployment — public link
-- [ ] Real-time alerts for severity-4 events
-- [ ] Portfolio-level risk aggregation across all signals
 
----
-
-## 🚀 Quickstart
-
-```bash
-# Clone the repo
-git clone https://github.com/yourusername/macrosignal.git
-cd macrosignal
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Add your free Groq API key — https://console.groq.com
-cp config.example.py config.py
-
-# Run the pipeline in order
-python data_pipeline/event_mapper.py     # No internet needed — test core logic
-python data_pipeline/price_fetcher.py   # Download global market history
-python llm_engine/signal_generator.py   # Generate signals — no API key needed
-python ml_model/train.py                # Train the XGBoost model
-streamlit run dashboard/app.py          # Launch the live dashboard
-```
-
----
 
 ## ⚠️ Disclaimer
 
 This project is for educational and research purposes only. Nothing here constitutes financial advice. Always do your own research before making investment decisions.
 
----
 
 ## 👨‍💻 About
 
@@ -293,6 +233,3 @@ Built by **Soham** — exploring the intersection of geopolitical intelligence a
 
 ---
 
-## 📄 License
-
-MIT License — free to use, fork, and build on.
