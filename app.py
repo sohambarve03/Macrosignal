@@ -1,18 +1,3 @@
-# ══════════════════════════════════════════════════════════════
-# dashboard/app.py
-#
-# 📖 WHAT THIS FILE DOES:
-#   Streamlit web dashboard — the live, interactive front-end.
-#   Type any headline → see BUY/SELL/HOLD signals instantly.
-#
-# 📖 WHAT IS STREAMLIT?
-#   Streamlit turns Python scripts into web apps with zero HTML/CSS.
-#   Every time you interact with a widget, the whole script reruns.
-#   It's the fastest way to build data apps in Python.
-#
-# Run with:  streamlit run dashboard/app.py
-# ══════════════════════════════════════════════════════════════
-
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -24,15 +9,14 @@ from data_pipeline.event_mapper import IMPACT_MATRIX, ETF_DESCRIPTIONS, get_expe
 from data_pipeline.news_fetcher import HISTORICAL_EVENTS
 from llm_engine.signal_generator import generate_signals_from_analysis, analyse_headline_without_llm
 
-# ── PAGE CONFIG ────────────────────────────────────────────────
+# PAGE CONFIG
 st.set_page_config(
-    page_title = "GeoFinance AI",
-    page_icon  = "🌍",
+    page_title = "Macrosignal",
     layout     = "wide",
     initial_sidebar_state = "expanded"
 )
 
-# ── CUSTOM CSS ─────────────────────────────────────────────────
+# CUSTOM CSS
 st.markdown("""
 <style>
     .buy-signal   { color: #00c853; font-weight: bold; font-size: 1.1rem; }
@@ -47,13 +31,13 @@ st.markdown("""
 
 # ── SIDEBAR ────────────────────────────────────────────────────
 with st.sidebar:
-    st.title("⚙️ Settings")
+    st.title(" Settings")
 
-    use_groq = st.checkbox("🤖 Use LLaMA 3 (Groq API)", value=False,
+    use_groq = st.checkbox(" Use LLaMA 3 (Groq API)", value=False,
                            help="Requires Groq API key in config.py")
 
     st.divider()
-    st.subheader("📚 About")
+    st.subheader(" About")
     st.markdown("""
     **GeoFinance AI** predicts ETF market signals
     based on geopolitical news analysis.
@@ -77,13 +61,13 @@ with st.sidebar:
 
 
 # ── MAIN HEADER ────────────────────────────────────────────────
-st.title("🌍 GeoFinance AI")
+st.title(" Macrosignal")
 st.subheader("Geopolitical Risk → Market Signal Analysis")
 st.divider()
 
 
 # ── TAB LAYOUT ─────────────────────────────────────────────────
-tab1, tab2, tab3 = st.tabs(["📰 Live Analysis", "📚 Historical Events", "🗺️ Event Map"])
+tab1, tab2, tab3 = st.tabs(["Live Analysis", "Historical Events", "Event Map"])
 
 
 # ══════════════════════════════════════════════════════════════
@@ -96,7 +80,7 @@ with tab1:
     col1, col2 = st.columns([3, 1])
     with col1:
         headline = st.text_input(
-            "📰 Enter a geopolitical news headline:",
+            "Enter a geopolitical news headline:",
             placeholder="e.g. Russia launches strikes on Ukraine energy grid"
         )
     with col2:
@@ -118,7 +102,7 @@ with tab1:
             headline = ex
 
     # Analyse button
-    if st.button("🔍 Analyse", type="primary") and headline:
+    if st.button("Analyse", type="primary") and headline:
 
         with st.spinner("Analysing..."):
 
@@ -130,9 +114,9 @@ with tab1:
                     analyser = GeoFinanceAnalyser()
                     analysis = analyser.analyse(headline)
                     analysis["severity"] = severity_override   # allow manual override
-                    st.success("✅ LLaMA 3 analysis complete")
+                    st.success("LLaMA 3 analysis complete")
                 except Exception as e:
-                    st.warning(f"⚠️ Groq failed: {e}. Using rule-based fallback.")
+                    st.warning(f"Groq failed: {e}. Using rule-based fallback.")
                     analysis = analyse_headline_without_llm(headline)
             else:
                 analysis = analyse_headline_without_llm(headline)
@@ -141,7 +125,7 @@ with tab1:
             # Generate signals
             output = generate_signals_from_analysis(analysis)
 
-        # ── RESULTS DISPLAY ────────────────────────────────────
+        # RESULTS DISPLAY 
         st.divider()
 
         # Event metadata
@@ -152,12 +136,12 @@ with tab1:
         meta_col4.metric("Confidence", f"{analysis['confidence']:.0%}")
 
         if analysis.get("summary"):
-            st.info(f"💬 {analysis['summary']}")
+            st.info(f"{analysis['summary']}")
 
         st.divider()
 
         # Signal cards
-        st.subheader("📊 Market Signals")
+        st.subheader("Market Signals")
         signals = output["signals"]
 
         # Display in a grid
@@ -180,7 +164,7 @@ with tab1:
                 st.caption(data["description"][:35])
 
         # Top movers table
-        st.subheader("🔥 Highest Impact ETFs")
+        st.subheader("Highest Impact ETFs")
         top_df = pd.DataFrame(output["top_movers"], columns=["ETF", "Score"])
         top_df["Signal"]    = top_df["Score"].apply(get_signal_from_score)
         top_df["Direction"] = top_df["Score"].apply(lambda s: "↑ LONG" if s > 0 else "↓ SHORT")
@@ -188,15 +172,15 @@ with tab1:
         st.dataframe(top_df, use_container_width=True, hide_index=True)
 
 
-# ══════════════════════════════════════════════════════════════
+
 # TAB 2 — Historical Events
-# ══════════════════════════════════════════════════════════════
+
 with tab2:
     st.header("Historical Events & Actual Market Reactions")
     st.caption("These are real events with real market outcomes — used for model validation")
 
     for event in HISTORICAL_EVENTS:
-        with st.expander(f"📅 {event['date']}  —  {event['title']}"):
+        with st.expander(f"{event['date']}  —  {event['title']}"):
 
             col1, col2 = st.columns(2)
             with col1:
@@ -231,11 +215,11 @@ with tab2:
                 signal_cols[i].markdown(f"**{etf}**<br>{icon}{sig}", unsafe_allow_html=True)
 
 
-# ══════════════════════════════════════════════════════════════
+
 # TAB 3 — Event Impact Map
-# ══════════════════════════════════════════════════════════════
+
 with tab3:
-    st.header("🗺️ Event → ETF Impact Map")
+    st.header("Event → ETF Impact Map")
     st.caption("Explore how different event types affect each market sector")
 
     # Event selector
@@ -264,7 +248,7 @@ with tab3:
             "Description": ETF_DESCRIPTIONS[etf],
             "Score":       score,
             "Signal":      get_signal_from_score(score),
-            "Bar":         "█" * min(int(abs(score)), 10) if score != 0 else "─"
+            "Bar":         " " * min(int(abs(score)), 10) if score != 0 else "─"
         })
 
     impact_df = pd.DataFrame(rows)
@@ -280,6 +264,6 @@ with tab3:
 
     # Show event examples
     event_data = IMPACT_MATRIX[event_type]
-    st.subheader("📌 Real-World Examples")
+    st.subheader("Real-World Examples")
     for ex in event_data["examples"]:
         st.markdown(f"- {ex}")
