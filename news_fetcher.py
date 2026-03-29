@@ -64,9 +64,9 @@ def fetch_headlines(max_per_source=10):
                     count += 1
 
         except Exception as e:
-            print(f"  ⚠️  Could not fetch {source_name}: {e}")
+            print(f"  Could not fetch {source_name}: {e}")
 
-    print(f"\n✅ Fetched {len(all_headlines)} relevant headlines total")
+    print(f"\n Fetched {len(all_headlines)} relevant headlines total")
     return all_headlines
 
 
@@ -75,13 +75,13 @@ def save_headlines(headlines, output_path="data/raw/headlines.json"):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w") as f:
         json.dump(headlines, f, indent=2)
-    print(f"💾 Saved to {output_path}")
+    print(f" Saved to {output_path}")
 
 
 def load_headlines(path="data/raw/headlines.json"):
     """Load previously saved headlines."""
     if not os.path.exists(path):
-        print(f"⚠️  No headlines file found at {path}. Run fetch_headlines() first.")
+        print(f" No headlines file found at {path}. Run fetch_headlines() first.")
         return []
     with open(path, "r") as f:
         return json.load(f)
@@ -150,20 +150,20 @@ HISTORICAL_EVENTS = [
 
 # TEST / RUN
 if __name__ == "__main__":
-    print("📰 GeoFinance News Fetcher\n")
+    print(" GeoFinance News Fetcher\n")
 
     # Show historical events (works without internet)
-    print("📚 Historical Events in our database:")
+    print(" Historical Events in our database:")
     for event in HISTORICAL_EVENTS:
         print(f"  [{event['date']}] {event['title']}")
         print(f"    Region: {event['region']} | Type: {event['event_type']} | Severity: {event['severity']}/4\n")
 
     # Try live fetch
-    print("\n🌐 Attempting live news fetch...")
+    print("\n Attempting live news fetch...")
     try:
         headlines = fetch_headlines(max_per_source=5)
         if headlines:
-            print(f"\n📰 Sample live headlines:")
+            print(f"\n Sample live headlines:")
             for h in headlines[:3]:
                 print(f"  [{h['region'].upper()}] {h['title']}")
             save_headlines(headlines)
