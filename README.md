@@ -11,7 +11,7 @@
 
 ---
 
-## 💡 The Idea
+##  The Idea
 
 Geopolitical events don't stay local. They ripple across the entire world.
 
@@ -152,7 +152,7 @@ Getting a large language model to output consistent, parseable JSON — with no 
 
 ---
 
-## 📰 Sample Output
+## Sample Output
 
 ```
 ════════════════════════════════════════════════════════════════
@@ -191,7 +191,7 @@ Highest conviction: Gold ↑   Lithium ↓   Nikkei ↓   JPY ↑
 
 ---
 
-## 🔬 Backtesting — Real Events, Real Outcomes
+## Backtesting — Real Events, Real Outcomes
 
 | Date | Event | MacroSignal Called | What Actually Happened |
 |------|-------|-------------------|------------------------|
@@ -206,7 +206,7 @@ Highest conviction: Gold ↑   Lithium ↓   Nikkei ↓   JPY ↑
 
 
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Component | Technology | Why |
 |-----------|-----------|-----|
@@ -220,12 +220,12 @@ Highest conviction: Gold ↑   Lithium ↓   Nikkei ↓   JPY ↑
 
 
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 This project is for educational and research purposes only. Nothing here constitutes financial advice. Always do your own research before making investment decisions.
 
 
-## 👨‍💻 About
+## About
 
 Built by **Soham** — exploring the intersection of geopolitical intelligence and quantitative finance.
 
